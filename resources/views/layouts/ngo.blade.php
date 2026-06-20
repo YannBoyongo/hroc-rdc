@@ -15,26 +15,7 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    @if(config('app.env') === 'production')
-        @php
-            $manifestPath = public_path('build/manifest.json');
-            $manifest = file_exists($manifestPath) ? json_decode(file_get_contents($manifestPath), true) : null;
-        @endphp
-        @if($manifest)
-            @if(isset($manifest['resources/css/app.css']))
-                <link rel="stylesheet" href="{{ asset('build/' . $manifest['resources/css/app.css']['file']) }}">
-            @endif
-            @if(isset($manifest['resources/js/app.js']))
-                <script type="module" src="{{ asset('build/' . $manifest['resources/js/app.js']['file']) }}"></script>
-            @endif
-        @else
-            {{-- Fallback si le manifest n'existe pas --}}
-            <link rel="stylesheet" href="{{ asset('build/assets/app.css') }}">
-            <script type="module" src="{{ asset('build/assets/app.js') }}"></script>
-        @endif
-    @else
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @endif
+    @include('layouts.partials.vite-assets')
     
     @stack('styles')
     
